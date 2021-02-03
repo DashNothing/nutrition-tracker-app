@@ -5,16 +5,11 @@ import {
   StackNavigationOptions,
 } from "@react-navigation/stack";
 import { Text } from "react-native";
+import { IconButton, Menu } from "react-native-paper";
 
 import Dashboard from "../screens/Dashboard";
 import TodaysMeals from "../screens/TodaysMeals";
 import AddMeal from "../screens/AddMeal";
-
-import AppBar from "../components/Appbar";
-
-import DrawerMenu from "../components/DrawerMenu";
-import { IconButton } from "react-native-paper";
-import { Route } from "@react-navigation/native";
 
 export type RootStackParamList = {
   Dashboard: {
@@ -27,14 +22,10 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleMenuChange = (isOpen: boolean) => {
-    setMenuOpen(isOpen);
+    setMenuVisible(!menuVisible);
   };
 
   const navigatorScreenOptions = (
@@ -44,7 +35,7 @@ const StackNavigator = () => {
     return {
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#93cd47",
+        backgroundColor: "#6ED61C",
       },
     };
   };
@@ -56,11 +47,32 @@ const StackNavigator = () => {
     return {
       headerTransparent: true,
       headerRight: () => (
-        <IconButton
-          color="white"
-          icon="plus"
-          onPress={() => navigation.navigate("AddMeal")}
-        />
+        <Menu
+          visible={menuVisible}
+          anchor={
+            <IconButton
+              color="white"
+              icon="dots-vertical"
+              onPress={() => toggleMenu()}
+            />
+          }
+          onDismiss={() => toggleMenu()}
+        >
+          <Menu.Item
+            title="Add new meal"
+            onPress={() => {
+              navigation.navigate("AddMeal");
+              setMenuVisible(false);
+            }}
+          />
+          <Menu.Item
+            title="Today's meals"
+            onPress={() => {
+              navigation.navigate("TodaysMeals");
+              setMenuVisible(false);
+            }}
+          />
+        </Menu>
       ),
     };
   };
@@ -91,41 +103,35 @@ const StackNavigator = () => {
   };
 
   return (
-    <DrawerMenu
-      isMenuOpen={menuOpen}
-      onChange={(isOpen) => setMenuOpen(isOpen)}
+    <Stack.Navigator
+      initialRouteName="Dashboard"
+      screenOptions={({ route, navigation }) =>
+        navigatorScreenOptions(route, navigation)
+      }
+      mode="modal"
     >
-      <Stack.Navigator
-        initialRouteName="Dashboard"
-        screenOptions={({ route, navigation }) =>
-          navigatorScreenOptions(route, navigation)
+      <Stack.Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={({ route, navigation }) =>
+          dashboardScreenOptions(route, navigation)
         }
-        mode="modal"
-      >
-        <Stack.Screen
-          name="Dashboard"
-          component={Dashboard}
-          initialParams={{ isMenuOpen: menuOpen }}
-          options={({ route, navigation }) =>
-            dashboardScreenOptions(route, navigation)
-          }
-        />
-        <Stack.Screen
-          name="TodaysMeals"
-          component={TodaysMeals}
-          options={({ route, navigation }) =>
-            todaysMealsScreenOptions(route, navigation)
-          }
-        />
-        <Stack.Screen
-          name="AddMeal"
-          component={AddMeal}
-          options={({ route, navigation }) =>
-            addMealScreenOptions(route, navigation)
-          }
-        />
-      </Stack.Navigator>
-    </DrawerMenu>
+      />
+      <Stack.Screen
+        name="TodaysMeals"
+        component={TodaysMeals}
+        options={({ route, navigation }) =>
+          todaysMealsScreenOptions(route, navigation)
+        }
+      />
+      <Stack.Screen
+        name="AddMeal"
+        component={AddMeal}
+        options={({ route, navigation }) =>
+          addMealScreenOptions(route, navigation)
+        }
+      />
+    </Stack.Navigator>
   );
 };
 

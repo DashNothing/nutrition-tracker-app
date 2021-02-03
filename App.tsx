@@ -46,7 +46,7 @@ export default function App() {
 
   const initalStoreValue: any = {
     nutritionStats: [],
-    dailyGoal: 0,
+    dailyGoal: 2000,
   };
 
   let store = createStore(rootReducer, initalStoreValue);
@@ -56,6 +56,7 @@ export default function App() {
   AsyncStorage.getItem("appState").then((data) => {
     if (data != null) {
       let localStorageData: AppStoreType = JSON.parse(data, dateTimeReviver);
+      console.log(localStorageData);
       let fetchedNutritionStats: NutritionStat[] =
         localStorageData.nutritionStats;
       let fetchedDailyGoal = localStorageData.dailyGoal;
@@ -117,7 +118,7 @@ const theme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#21cd9a",
-    accent: "#fa9481",
+    primary: "#478DCD",
+    accent: "#478DCD",
   },
 };

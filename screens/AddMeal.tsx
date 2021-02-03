@@ -106,6 +106,7 @@ const AddMeal = ({ navigation, theme }: Props) => {
         onChangeText={(query) => setSearchQuery(query)}
         onIconPress={() => searchForFood()}
         onSubmitEditing={() => searchForFood()}
+        style={styles.searchBar}
       />
       <FlatList
         data={fetchedFoods}
@@ -157,6 +158,10 @@ const AddMeal = ({ navigation, theme }: Props) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  searchBar: {
+    paddingVertical: 5,
+  },
+});
 
 export default withTheme(AddMeal);
