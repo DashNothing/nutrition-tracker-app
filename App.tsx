@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  Platform,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView, StyleSheet, StatusBar, Platform } from "react-native";
 import { Provider as PaperProvider, DefaultTheme } from "react-native-paper";
 import { Theme } from "react-native-paper/lib/typescript/types";
 
-import { Provider, useDispatch } from "react-redux";
-import { AppStoreType } from "./redux/store";
-
 import { NavigationContainer } from "@react-navigation/native";
-
 import StackNavigator from "./navigation/StackNavigator";
 
+import { Provider } from "react-redux";
 import { rootReducer, RootState } from "./redux/reducers";
-import { CombinedState, createStore, Store } from "redux";
+import { createStore } from "redux";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -26,23 +17,14 @@ import {
   LOAD_NUTRITION_STATS,
   NutritionStat,
 } from "./redux/nutritionStats/types";
-import { updateDailyGoal } from "./redux/dailyGoal/actions";
-import { dateWithoutTime, dateTimeReviver, sameDay } from "./utils/utils";
-import { LOAD_DAILY_GOAL, UPDATE_DAILY_GOAL } from "./redux/dailyGoal/types";
+import { UPDATE_DAILY_GOAL } from "./redux/dailyGoal/types";
+
+import { dateTimeReviver, sameDay } from "./utils/utils";
 
 export default function App() {
   //AsyncStorage.removeItem("appState");
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const saveToLocalStorage = (state: RootState) => {
-    try {
-      const serializedState = JSON.stringify(state);
-      AsyncStorage.setItem("appState", serializedState);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const initalStoreValue: any = {
     nutritionStats: [],
@@ -52,11 +34,20 @@ export default function App() {
   let store = createStore(rootReducer, initalStoreValue);
   store.subscribe(() => saveToLocalStorage(store.getState()));
 
+  // Saves store state to local storage
+  const saveToLocalStorage = (state: RootState) => {
+    try {
+      const serializedState = JSON.stringify(state);
+      AsyncStorage.setItem("appState", serializedState);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // Fetch stored state from local storage
   AsyncStorage.getItem("appState").then((data) => {
     if (data != null) {
-      let localStorageData: AppStoreType = JSON.parse(data, dateTimeReviver);
-      console.log(localStorageData);
+      let localStorageData: RootState = JSON.parse(data, dateTimeReviver);
       let fetchedNutritionStats: NutritionStat[] =
         localStorageData.nutritionStats;
       let fetchedDailyGoal = localStorageData.dailyGoal;
@@ -86,24 +77,17 @@ export default function App() {
     }
   });
 
-  useEffect(() => {
-    setIsLoading(false);
-  }, [store.getState().nutritionStats]);
-
-  if (isLoading) {
-    return <View></View>;
-  } else
-    return (
-      <Provider store={store}>
-        <PaperProvider theme={theme}>
-          <SafeAreaView style={styles.container}>
-            <NavigationContainer>
-              <StackNavigator />
-            </NavigationContainer>
-          </SafeAreaView>
-        </PaperProvider>
-      </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <PaperProvider theme={theme}>
+        <SafeAreaView style={styles.container}>
+          <NavigationContainer>
+            <StackNavigator />
+          </NavigationContainer>
+        </SafeAreaView>
+      </PaperProvider>
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({

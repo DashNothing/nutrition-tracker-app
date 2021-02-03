@@ -1,31 +1,24 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  ListRenderItem,
-  ListRenderItemInfo,
-} from "react-native";
-import { List, Text } from "react-native-paper";
-
+import { FlatList, ListRenderItemInfo } from "react-native";
 import SwipeableListItem from "../components/SwipeableListItem";
 
-import { useSelector } from "react-redux";
-import { Meal } from "../redux/nutritionStats/types";
-import { AppStoreType } from "../redux/store";
-import { sameDay } from "../utils/utils";
+import { useSelector, useDispatch } from "react-redux";
 
-interface Props {
-  navigation: any;
-}
+import { Meal } from "../redux/nutritionStats/types";
+import { RootState } from "../redux/reducers";
+import { removeMeal } from "../redux/nutritionStats/actions";
+
+import { sameDay } from "../utils/utils";
 
 interface MealId {
   meal: Meal;
-  id: number;
+  id: string;
 }
 
-const TodaysMeals = ({ navigation }: Props) => {
-  let meals: MealId[] = useSelector((state: AppStoreType) => {
+const TodaysMeals = () => {
+  const dispatch = useDispatch();
+
+  let meals: MealId[] = useSelector((state: RootState) => {
     const todaysStats = state.nutritionStats.find((stat) =>
       sameDay(stat.date, new Date())
     );
@@ -33,7 +26,7 @@ const TodaysMeals = ({ navigation }: Props) => {
       const myMeals = todaysStats.meals.map((meal, index) => {
         return {
           meal: meal,
-          id: index,
+          id: randomID(),
         };
       });
       return myMeals;
@@ -41,8 +34,20 @@ const TodaysMeals = ({ navigation }: Props) => {
     return [];
   });
 
+  const handleRemoveMeal = (index: number) => {
+    dispatch(removeMeal(index));
+  };
+
   const renderItem = ({ item, index }: ListRenderItemInfo<MealId>) => {
-    return <SwipeableListItem meal={item.meal} index={item.id} />;
+    return (
+      <SwipeableListItem
+        meal={item.meal}
+        index={index}
+        onRemoveMeal={() => {
+          handleRemoveMeal(index);
+        }}
+      />
+    );
   };
 
   return (
@@ -50,11 +55,13 @@ const TodaysMeals = ({ navigation }: Props) => {
       data={meals}
       extraData={meals}
       renderItem={renderItem}
-      keyExtractor={(item) => "key" + item.id}
+      keyExtractor={(item) => item.id}
     />
   );
 };
 
-const styles = StyleSheet.create({});
+const randomID = function () {
+  return "_" + Math.random().toString(36).substr(2, 9);
+};
 
 export default TodaysMeals;

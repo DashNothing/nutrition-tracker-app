@@ -1,20 +1,17 @@
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Animated, View } from "react-native";
 import { List, IconButton, Text, Colors } from "react-native-paper";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useDispatch } from "react-redux";
 
 import { Meal } from "../redux/nutritionStats/types";
-import { removeMeal } from "../redux/nutritionStats/actions";
 
 interface Props {
   meal: Meal;
   index: number;
+  onRemoveMeal: () => void;
 }
 
-const SwipeableListItem = ({ meal, index }: Props) => {
-  const dispatch = useDispatch();
-
+const SwipeableListItem = ({ meal, index, onRemoveMeal }: Props) => {
   const animationDuration = 300;
 
   let removeAnimation = new Animated.Value(1);
@@ -42,7 +39,7 @@ const SwipeableListItem = ({ meal, index }: Props) => {
       toValue: 0,
       duration: animationDuration,
       useNativeDriver: false,
-    }).start(() => dispatch(removeMeal(index)));
+    }).start(onRemoveMeal);
   };
 
   const rightSwipe = () => {
@@ -66,29 +63,13 @@ const SwipeableListItem = ({ meal, index }: Props) => {
         friction={2}
       >
         <List.Item
+          style={styles.listItem}
           title={meal.name}
           titleStyle={{ fontWeight: "600" }}
           description={meal.amount + "g"}
           right={(props) => (
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "bold",
-                alignSelf: "center",
-                marginRight: 20,
-              }}
-            >
-              {meal.calories}kcal
-            </Text>
+            <Text style={styles.listItemRIght}>{meal.calories}kcal</Text>
           )}
-          style={[
-            styles.listItem,
-            {
-              backgroundColor: "white",
-              borderBottomColor: "#eee",
-              borderBottomWidth: 1,
-            },
-          ]}
         />
       </Swipeable>
     </Animated.View>
@@ -99,6 +80,15 @@ const styles = StyleSheet.create({
   listItem: {
     height: 75,
     justifyContent: "center",
+    backgroundColor: "white",
+    borderBottomColor: "#eee",
+    borderBottomWidth: 1,
+  },
+  listItemRIght: {
+    fontSize: 16,
+    fontWeight: "bold",
+    alignSelf: "center",
+    marginRight: 20,
   },
   deleteBox: {
     backgroundColor: Colors.red600,
@@ -108,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SwipeableListItem;
+export default memo(SwipeableListItem);

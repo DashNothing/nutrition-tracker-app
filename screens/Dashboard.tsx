@@ -6,9 +6,6 @@ import {
   Text,
   Button,
   Headline,
-  Dialog,
-  Portal,
-  TextInput,
   FAB,
 } from "react-native-paper";
 import { Theme } from "react-native-paper/lib/typescript/types";
@@ -16,24 +13,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ProgressCircle } from "react-native-svg-charts";
 
 import MacrosGrid from "../components/MacrosGrid";
+import DailyGoalDialog from "../components/DailyGoalDialog";
 
 import { useSelector, useDispatch } from "react-redux";
-
-import {
-  Meal,
-  NutritionStat,
-  NutritionStatsState,
-} from "../redux/nutritionStats/types";
-import { AppStoreType } from "../redux/store";
 
 import { sameDay } from "../utils/utils";
 import { RootState } from "../redux/reducers";
 import { updateDailyGoal } from "../redux/dailyGoal/actions";
+import { Meal } from "../redux/nutritionStats/types";
+import { addMeal } from "../redux/nutritionStats/actions";
 
 interface Props {
   theme: Theme;
   navigation: any;
-  route: any;
 }
 
 export interface Macros {
@@ -44,64 +36,58 @@ export interface Macros {
   fiber: number;
 }
 
-const Dashboard = ({ theme, navigation, route }: Props) => {
+const Dashboard = ({ theme, navigation }: Props) => {
   const [dailyGoalDialogVisible, setDailyGoalDialogVisible] = useState(false);
   const [dailyGoalInput, setDailyGoalnput] = useState(
     useSelector((state: RootState) => state.dailyGoal.toString())
   );
 
+  let dailyGoal = useSelector((state: RootState) => state.dailyGoal);
+
+  useEffect(() => {
+    setDailyGoalnput(dailyGoal.toString());
+  }, [dailyGoal]);
+
   const dispatch = useDispatch();
 
+  // Load today's nutrition stats and extract the macro values from its meals
   let todaysMacros: Macros = useSelector((state: RootState) => {
     let macros: Macros;
+    const todaysStats = state.nutritionStats.find((stat) =>
+      sameDay(stat.date, new Date())
+    );
 
-    if (state.nutritionStats.length > 0) {
-      const todaysStats = state.nutritionStats.find((stat) =>
-        sameDay(stat.date, new Date())
-      );
+    if (todaysStats && todaysStats.meals.length > 0) {
+      let calories = todaysStats.meals
+        .map((meal) => meal.calories)
+        .reduce((prev, next) => prev + next);
+      let protein = todaysStats.meals
+        .map((meal) => meal.protein)
+        .reduce((prev, next) => prev + next);
+      let carbs = todaysStats.meals
+        .map((meal) => meal.carbs)
+        .reduce((prev, next) => prev + next);
+      let fats = todaysStats.meals
+        .map((meal) => meal.fats)
+        .reduce((prev, next) => prev + next);
+      let fiber = todaysStats.meals
+        .map((meal) => meal.fiber)
+        .reduce((prev, next) => prev + next);
 
-      if (todaysStats && todaysStats.meals.length != 0) {
-        let calories = todaysStats.meals
-          .map((meal) => meal.calories)
-          .reduce((prev, next) => prev + next);
-        let protein = todaysStats.meals
-          .map((meal) => meal.protein)
-          .reduce((prev, next) => prev + next);
-        let carbs = todaysStats.meals
-          .map((meal) => meal.carbs)
-          .reduce((prev, next) => prev + next);
-        let fats = todaysStats.meals
-          .map((meal) => meal.fats)
-          .reduce((prev, next) => prev + next);
-        let fiber = todaysStats.meals
-          .map((meal) => meal.fiber)
-          .reduce((prev, next) => prev + next);
-
-        macros = { calories, carbs, protein, fats, fiber };
-      } else {
-        macros = {
-          protein: 0,
-          carbs: 0,
-          calories: 0,
-          fats: 0,
-          fiber: 0,
-        };
-      }
-      return macros;
+      macros = { calories, carbs, protein, fats, fiber };
+    } else {
+      macros = {
+        protein: 0,
+        carbs: 0,
+        calories: 0,
+        fats: 0,
+        fiber: 0,
+      };
     }
-    macros = {
-      protein: 0,
-      carbs: 0,
-      calories: 0,
-      fats: 0,
-      fiber: 0,
-    };
     return macros;
   });
 
-  let dailyGoal = useSelector((state: AppStoreType) => state.dailyGoal);
-
-  const closeDailyGoalDIalog = () => {
+  const closeDailyGoalDialog = () => {
     setDailyGoalDialogVisible(false);
     setDailyGoalnput(dailyGoal.toString());
   };
@@ -119,6 +105,16 @@ const Dashboard = ({ theme, navigation, route }: Props) => {
     } else {
       return "#E9C924";
     }
+  };
+
+  const testMeal: Meal = {
+    name: "Pizza slice",
+    amount: 100,
+    calories: 120,
+    protein: 5,
+    carbs: 60,
+    fats: 20,
+    fiber: 3,
   };
 
   return (
@@ -164,54 +160,37 @@ const Dashboard = ({ theme, navigation, route }: Props) => {
             contentStyle={{ paddingVertical: 2 }}
             labelStyle={styles.todaysMealsButton}
             onPress={() => {
-              console.log("Button pressed");
               navigation.navigate("TodaysMeals");
             }}
           >
             See today's meals
           </Button>
+          <Button
+            mode="contained"
+            color="green"
+            contentStyle={{ paddingVertical: 2 }}
+            labelStyle={styles.todaysMealsButton}
+            onPress={() => {
+              dispatch(addMeal(testMeal));
+            }}
+          >
+            Add pizza slice
+          </Button>
           <MacrosGrid macros={todaysMacros} />
         </View>
       </ScrollView>
-      <Portal>
-        <Dialog
-          visible={dailyGoalDialogVisible}
-          onDismiss={() => {
-            closeDailyGoalDIalog();
-          }}
-        >
-          <Dialog.Title>Change my daily goal</Dialog.Title>
-          <Dialog.Content>
-            <TextInput
-              label="My daily goal"
-              value={dailyGoalInput}
-              onChangeText={(text) => {
-                setDailyGoalnput(text.replace(/[^0-9]/g, ""));
-              }}
-              mode="outlined"
-            />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              onPress={() => {
-                closeDailyGoalDIalog();
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onPress={() => {
-                if (dailyGoalInput != "") {
-                  dispatch(updateDailyGoal(parseInt(dailyGoalInput)));
-                }
-                closeDailyGoalDIalog();
-              }}
-            >
-              Done
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <DailyGoalDialog
+        dailyGoal={dailyGoalInput}
+        visible={dailyGoalDialogVisible}
+        onDismiss={closeDailyGoalDialog}
+        onTextChange={(text) => setDailyGoalnput(text.replace(/[^0-9]/g, ""))}
+        onConfirm={() => {
+          if (dailyGoalInput != "") {
+            dispatch(updateDailyGoal(parseInt(dailyGoalInput)));
+          }
+          closeDailyGoalDialog();
+        }}
+      />
       <FAB
         style={styles.fab}
         icon="food-apple"
@@ -273,8 +252,12 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     fontSize: 16,
   },
-
-  fab: { position: "absolute", margin: 16, right: 0, bottom: 0 },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
 });
 
 export default withTheme(Dashboard);
