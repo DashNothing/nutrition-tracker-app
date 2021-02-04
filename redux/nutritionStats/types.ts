@@ -1,16 +1,8 @@
+import { Meal } from "../types";
+
 export interface NutritionStat {
   date: Date;
   meals: Meal[];
-}
-
-export interface Meal {
-  name: string;
-  amount: number;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fats: number;
-  fiber: number;
 }
 
 export type NutritionStatsState = NutritionStat[];

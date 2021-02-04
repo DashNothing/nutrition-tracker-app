@@ -26,3 +26,7 @@ export function dateTimeReviver(key: any, value: any) {
   }
   return value;
 }
+
+export const randomID = function () {
+  return "_" + Math.random().toString(36).substr(2, 9);
+};

@@ -12,9 +12,10 @@ import ListItem from "../components/ListItem";
 
 import { useDispatch } from "react-redux";
 
-import { Meal } from "../redux/nutritionStats/types";
+import { Meal } from "../redux/types";
 import { addMeal } from "../redux/nutritionStats/actions";
 import { Theme } from "react-native-paper/lib/typescript/types";
+import AddMealDialog from "./AddMealDIalog";
 
 const API_KEY = "WCsllB7f9m6qRwybiPba4f2IScSYGPzVyBWJAgUh";
 
@@ -31,7 +32,6 @@ const AddMealUSDA = ({ navigation, theme }: Props) => {
   const [chosenMeal, setChosenMeal] = useState<Meal | null>(null);
 
   const [dialogVisible, setDialogVisible] = useState(false);
-  const [gramsInput, setGramsInput] = useState("");
 
   const searchForFood = () => {
     if (searchQuery != "") {
@@ -80,7 +80,7 @@ const AddMealUSDA = ({ navigation, theme }: Props) => {
     setDialogVisible(true);
   };
 
-  const confirmDialog = () => {
+  const confirmDialog = (gramsInput: string) => {
     if (chosenMeal) {
       let meal: Meal = chosenMeal;
       meal.amount = parseInt(gramsInput);
@@ -93,6 +93,10 @@ const AddMealUSDA = ({ navigation, theme }: Props) => {
       dispatch(addMeal(meal));
       navigation.navigate("Dashboard");
     }
+  };
+
+  const handleDialogDismiss = () => {
+    setDialogVisible(false);
   };
 
   const renderItem = ({ item, index }: ListRenderItemInfo<Meal>) => {
@@ -114,47 +118,13 @@ const AddMealUSDA = ({ navigation, theme }: Props) => {
         renderItem={renderItem}
         keyExtractor={(item, index) => "key" + index}
       />
-      <Portal>
-        <Dialog
-          visible={dialogVisible}
-          onDismiss={() => {
-            setDialogVisible(false);
-            setGramsInput("");
-          }}
-        >
-          <Dialog.Title>How many grams?</Dialog.Title>
-          <Dialog.Content>
-            <TextInput
-              label="Grams"
-              value={gramsInput}
-              onChangeText={(text: string) =>
-                setGramsInput(text.replace(/[^0-9]/g, ""))
-              }
-              mode="outlined"
-            />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              onPress={() => {
-                setDialogVisible(false);
-                setGramsInput("");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onPress={() => {
-                if (chosenMeal) {
-                  confirmDialog();
-                }
-                setDialogVisible(false);
-              }}
-            >
-              Done
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <AddMealDialog
+        visible={dialogVisible}
+        onConfirm={confirmDialog}
+        onDismiss={() => {
+          handleDialogDismiss();
+        }}
+      />
     </Fragment>
   );
 };

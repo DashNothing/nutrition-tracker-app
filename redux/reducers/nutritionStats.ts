@@ -1,8 +1,5 @@
-import TodaysMeals from "../../screens/TodaysMeals";
 import { sameDay, dateWithoutTime } from "../../utils/utils";
 import {
-  NutritionStat,
-  Meal,
   REMOVE_MEAL,
   LOAD_NUTRITION_STATS,
   ADD_MEAL,

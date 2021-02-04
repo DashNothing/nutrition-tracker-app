@@ -1,9 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, View } from "react-native";
 import { List, IconButton, Text, Colors } from "react-native-paper";
 import { useDispatch } from "react-redux";
 
-import { Meal } from "../redux/nutritionStats/types";
+import { Meal } from "../redux/types";
 
 interface Props {
   meal: Meal;
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItem;
+export default memo(ListItem);

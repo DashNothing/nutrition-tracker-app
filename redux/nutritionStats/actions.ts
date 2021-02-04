@@ -4,8 +4,8 @@ import {
   ADD_MEAL,
   REMOVE_MEAL,
   NutritionStat,
-  Meal,
 } from "./types";
+import { Meal } from "../types";
 
 export const loadNutritionStats = (nutritionStats: NutritionStat[]) => ({
   type: LOAD_NUTRITION_STATS,

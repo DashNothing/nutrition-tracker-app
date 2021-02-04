@@ -4,11 +4,11 @@ import SwipeableListItem from "../components/SwipeableListItem";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { Meal } from "../redux/nutritionStats/types";
+import { Meal } from "../redux/types";
 import { RootState } from "../redux/reducers";
 import { removeMeal } from "../redux/nutritionStats/actions";
 
-import { sameDay } from "../utils/utils";
+import { randomID, sameDay } from "../utils/utils";
 
 interface MealId {
   meal: Meal;
@@ -58,10 +58,6 @@ const TodaysMeals = () => {
       keyExtractor={(item) => item.id}
     />
   );
-};
-
-const randomID = function () {
-  return "_" + Math.random().toString(36).substr(2, 9);
 };
 
 export default TodaysMeals;

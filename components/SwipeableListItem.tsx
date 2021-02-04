@@ -9,9 +9,10 @@ interface Props {
   meal: Meal;
   index: number;
   onRemoveMeal: () => void;
+  onPress?: () => void;
 }
 
-const SwipeableListItem = ({ meal, index, onRemoveMeal }: Props) => {
+const SwipeableListItem = ({ meal, index, onRemoveMeal, onPress }: Props) => {
   const animationDuration = 300;
 
   let removeAnimation = new Animated.Value(1);
@@ -70,6 +71,7 @@ const SwipeableListItem = ({ meal, index, onRemoveMeal }: Props) => {
           right={(props) => (
             <Text style={styles.listItemRIght}>{meal.calories}kcal</Text>
           )}
+          onPress={onPress}
         />
       </Swipeable>
     </Animated.View>

@@ -4,9 +4,17 @@
     <list default="true" id="70b31d8c-6ac1-4fa5-a97a-09e9ea7746e7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/AddMealCustom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/AddMealCustom.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/AddMealUSDA.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/AddMealUSDA.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/SwipeableListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SwipeableListItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/nutritionStats/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/nutritionStats/actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/nutritionStats/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/redux/nutritionStats/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/reducers/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/reducers/nutritionStats.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/selectors.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/AddMeal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/AddMeal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/TodaysMeals.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/TodaysMeals.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,10 +49,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="153" y="76" width="1060" height="437" key="AVDManager" timestamp="1612380266941">
+    <state x="153" y="76" width="1060" height="437" key="AVDManager" timestamp="1612457044846">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="153" y="76" width="1060" height="437" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1612380266941" />
+    <state x="153" y="76" width="1060" height="437" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1612457044846" />
     <state x="180" y="0" key="SettingsEditor" timestamp="1612293912918">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

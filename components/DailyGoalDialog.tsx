@@ -32,7 +32,7 @@ const DailyGoalDialog = ({
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={() => onDismiss()}>Cancel</Button>
-          <Button onPress={() => onConfirm}>Done</Button>
+          <Button onPress={() => onConfirm()}>Done</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>
