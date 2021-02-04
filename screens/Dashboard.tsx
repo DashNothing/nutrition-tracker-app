@@ -165,7 +165,7 @@ const Dashboard = ({ theme, navigation }: Props) => {
           >
             See today's meals
           </Button>
-          <Button
+          {/* <Button
             mode="contained"
             color="green"
             contentStyle={{ paddingVertical: 2 }}
@@ -175,7 +175,7 @@ const Dashboard = ({ theme, navigation }: Props) => {
             }}
           >
             Add pizza slice
-          </Button>
+          </Button> */}
           <MacrosGrid macros={todaysMacros} />
         </View>
       </ScrollView>

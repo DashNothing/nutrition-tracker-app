@@ -36,6 +36,7 @@ const StackNavigator = () => {
       headerTintColor: "white",
       headerStyle: {
         backgroundColor: "#6ED61C",
+        elevation: 0,
       },
     };
   };
