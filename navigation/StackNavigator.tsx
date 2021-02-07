@@ -1,10 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   createStackNavigator,
-  StackHeaderProps,
   StackNavigationOptions,
 } from "@react-navigation/stack";
-import { Text } from "react-native";
 import { IconButton, Menu } from "react-native-paper";
 
 import Dashboard from "../screens/Dashboard";
@@ -64,21 +62,8 @@ const StackNavigator = () => {
           onDismiss={() => toggleMenu()}
         >
           <Menu.Item
-            title="Add new meal"
-            onPress={() => {
-              navigation.navigate("AddMeal");
-              setMenuVisible(false);
-            }}
-          />
-          <Menu.Item
-            title="Today's meals"
-            onPress={() => {
-              navigation.navigate("TodaysMeals");
-              setMenuVisible(false);
-            }}
-          />
-          <Menu.Item
             title="My saved meals"
+            icon="playlist-edit"
             onPress={() => {
               navigation.navigate("CustomMeals");
               setMenuVisible(false);
@@ -86,6 +71,7 @@ const StackNavigator = () => {
           />
           <Menu.Item
             title="Progress calendar"
+            icon="calendar"
             onPress={() => {
               navigation.navigate("ProgressCalendar");
               setMenuVisible(false);
