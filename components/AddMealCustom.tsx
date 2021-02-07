@@ -9,6 +9,7 @@ import { RootState } from "../redux/reducers";
 import { Meal } from "../redux/types";
 import { randomID } from "../utils/utils";
 import AddMealDialog from "./AddMealDIalog";
+import ListItem from "./ListItem";
 import SwipeableListItem from "./SwipeableListItem";
 
 interface MealId {
@@ -58,10 +59,6 @@ const AddMealCustom = ({ navigation }: Props) => {
     setDialogVisible(false);
   };
 
-  const handleRemoveMeal = (index: number) => {
-    dispatch(removeCustomMeal(index));
-  };
-
   const handleItemPress = (meal: Meal) => {
     setChosenMeal(meal);
     setDialogVisible(true);
@@ -69,12 +66,9 @@ const AddMealCustom = ({ navigation }: Props) => {
 
   const renderItem = ({ item, index }: ListRenderItemInfo<MealId>) => {
     return (
-      <SwipeableListItem
+      <ListItem
         meal={item.meal}
         index={index}
-        onRemoveMeal={() => {
-          handleRemoveMeal(index);
-        }}
         onPress={() => {
           handleItemPress(item.meal);
         }}

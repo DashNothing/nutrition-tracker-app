@@ -10,13 +10,17 @@ import { IconButton, Menu } from "react-native-paper";
 import Dashboard from "../screens/Dashboard";
 import TodaysMeals from "../screens/TodaysMeals";
 import AddMeal from "../screens/AddMeal";
+import CustomMeals from "../screens/CustomMeals";
+import AddCustomMeal from "../screens/AddCustomMeal";
+import ProgressCalendar from "../screens/ProgressCalendar";
 
 export type RootStackParamList = {
-  Dashboard: {
-    isMenuOpen: boolean;
-  };
+  Dashboard: undefined;
   TodaysMeals: undefined;
   AddMeal: undefined;
+  CustomMeals: undefined;
+  AddCustomMeal: undefined;
+  ProgressCalendar: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -73,6 +77,20 @@ const StackNavigator = () => {
               setMenuVisible(false);
             }}
           />
+          <Menu.Item
+            title="My saved meals"
+            onPress={() => {
+              navigation.navigate("CustomMeals");
+              setMenuVisible(false);
+            }}
+          />
+          <Menu.Item
+            title="Progress calendar"
+            onPress={() => {
+              navigation.navigate("ProgressCalendar");
+              setMenuVisible(false);
+            }}
+          />
         </Menu>
       ),
     };
@@ -103,6 +121,40 @@ const StackNavigator = () => {
     };
   };
 
+  const customMealsScreenOptions = (
+    route: any,
+    navigation: any
+  ): StackNavigationOptions => {
+    return {
+      title: "Saved meals",
+      headerRight: () => (
+        <IconButton
+          color="white"
+          icon="plus"
+          onPress={() => navigation.navigate("AddCustomMeal")}
+        />
+      ),
+    };
+  };
+
+  const addCustomMealScreenOptions = (
+    route: any,
+    navigation: any
+  ): StackNavigationOptions => {
+    return {
+      title: "Add my meal",
+    };
+  };
+
+  const progressCalendarScreenOptions = (
+    route: any,
+    navigation: any
+  ): StackNavigationOptions => {
+    return {
+      title: "Progress calendar",
+    };
+  };
+
   return (
     <Stack.Navigator
       initialRouteName="Dashboard"
@@ -130,6 +182,27 @@ const StackNavigator = () => {
         component={AddMeal}
         options={({ route, navigation }) =>
           addMealScreenOptions(route, navigation)
+        }
+      />
+      <Stack.Screen
+        name="CustomMeals"
+        component={CustomMeals}
+        options={({ route, navigation }) =>
+          customMealsScreenOptions(route, navigation)
+        }
+      />
+      <Stack.Screen
+        name="AddCustomMeal"
+        component={AddCustomMeal}
+        options={({ route, navigation }) =>
+          addCustomMealScreenOptions(route, navigation)
+        }
+      />
+      <Stack.Screen
+        name="ProgressCalendar"
+        component={ProgressCalendar}
+        options={({ route, navigation }) =>
+          progressCalendarScreenOptions(route, navigation)
         }
       />
     </Stack.Navigator>

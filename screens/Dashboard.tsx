@@ -10,7 +10,6 @@ import {
 } from "react-native-paper";
 import { Theme } from "react-native-paper/lib/typescript/types";
 import { LinearGradient } from "expo-linear-gradient";
-import { ProgressCircle } from "react-native-svg-charts";
 
 import MacrosGrid from "../components/MacrosGrid";
 import DailyGoalDialog from "../components/DailyGoalDialog";
@@ -20,8 +19,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { sameDay } from "../utils/utils";
 import { RootState } from "../redux/reducers";
 import { updateDailyGoal } from "../redux/dailyGoal/actions";
-import { Meal } from "../redux/nutritionStats/types";
-import { addMeal } from "../redux/nutritionStats/actions";
+import { Meal } from "../redux/types";
+import CalorieProgressCircle from "../components/CalorieProgressChart";
 
 interface Props {
   theme: Theme;
@@ -92,21 +91,6 @@ const Dashboard = ({ theme, navigation }: Props) => {
     setDailyGoalnput(dailyGoal.toString());
   };
 
-  const progressChartColor = () => {
-    const progress = todaysMacros.calories / dailyGoal;
-    if (progress < 0.25) {
-      return "#ACF154";
-    } else if (progress < 0.5) {
-      return "#88E90E";
-    } else if (progress < 0.75) {
-      return "#6ED61C";
-    } else if (progress <= 1.1) {
-      return "#2ECD15";
-    } else {
-      return "#E9C924";
-    }
-  };
-
   const testMeal: Meal = {
     name: "Pizza slice",
     amount: 100,
@@ -129,27 +113,11 @@ const Dashboard = ({ theme, navigation }: Props) => {
             <Headline style={[{ alignSelf: "center" }, styles.headline]}>
               My Daily Goal
             </Headline>
-            <View>
-              <ProgressCircle
-                style={styles.progressCircle}
-                progress={todaysMacros.calories / dailyGoal}
-                progressColor={progressChartColor()}
-                strokeWidth={16}
-              />
-              <View style={styles.progrressCircleLabelContainer}>
-                <Text
-                  style={[
-                    styles.progressCircleLabel,
-                    { color: progressChartColor() },
-                  ]}
-                >
-                  {Math.round((todaysMacros.calories / dailyGoal) * 100)}%
-                </Text>
-              </View>
-            </View>
-            <Text style={styles.progressText}>
-              {todaysMacros.calories} of {dailyGoal} kcal
-            </Text>
+            <CalorieProgressCircle
+              calories={todaysMacros.calories}
+              goal={dailyGoal}
+            />
+
             <Button mode="text" onPress={() => setDailyGoalDialogVisible(true)}>
               Change my daily goal
             </Button>
@@ -241,12 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  progressText: {
-    alignSelf: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#666",
-  },
+
   todaysMealsButton: {
     color: "white",
     letterSpacing: 0,

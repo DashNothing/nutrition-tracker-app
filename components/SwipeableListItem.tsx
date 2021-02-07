@@ -10,9 +10,16 @@ interface Props {
   index: number;
   onRemoveMeal: () => void;
   onPress?: () => void;
+  simple?: boolean;
 }
 
-const SwipeableListItem = ({ meal, index, onRemoveMeal, onPress }: Props) => {
+const SwipeableListItem = ({
+  meal,
+  index,
+  onRemoveMeal,
+  onPress,
+  simple,
+}: Props) => {
   const animationDuration = 300;
 
   let removeAnimation = new Animated.Value(1);
@@ -67,10 +74,14 @@ const SwipeableListItem = ({ meal, index, onRemoveMeal, onPress }: Props) => {
           style={styles.listItem}
           title={meal.name}
           titleStyle={{ fontWeight: "600" }}
-          description={meal.amount + "g"}
-          right={(props) => (
-            <Text style={styles.listItemRIght}>{meal.calories}kcal</Text>
-          )}
+          description={simple ? null : meal.amount + "g"}
+          right={
+            simple
+              ? undefined
+              : (props) => (
+                  <Text style={styles.listItemRIght}>{meal.calories}kcal</Text>
+                )
+          }
           onPress={onPress}
         />
       </Swipeable>
