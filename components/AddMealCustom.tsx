@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { StyleSheet, FlatList, ListRenderItemInfo } from "react-native";
-import { Text } from "react-native-paper";
+import { Snackbar, Text } from "react-native-paper";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addCustomMeal, removeCustomMeal } from "../redux/customMeals/actions";
@@ -26,6 +26,7 @@ const AddMealCustom = ({ navigation }: Props) => {
 
   const [chosenMeal, setChosenMeal] = useState<Meal | null>(null);
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   let customMeals: MealId[] = useSelector((state: RootState) => {
     const fetchedMeals = state.customMeals;
@@ -51,7 +52,7 @@ const AddMealCustom = ({ navigation }: Props) => {
       meal.fiber = Math.round((meal.fiber * meal.amount) / 100);
 
       dispatch(addMeal(meal));
-      navigation.navigate("Dashboard");
+      setSnackbarVisible(true);
     }
   };
 
@@ -88,6 +89,12 @@ const AddMealCustom = ({ navigation }: Props) => {
         onDismiss={handleDialogDismiss}
         onConfirm={confirmDialog}
       />
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+      >
+        Meal added to today's nutritional stats.
+      </Snackbar>
     </Fragment>
   );
 };

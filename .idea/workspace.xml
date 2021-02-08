@@ -4,11 +4,7 @@
     <list default="true" id="70b31d8c-6ac1-4fa5-a97a-09e9ea7746e7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/AddMealCustom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/AddMealCustom.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/SwipeableListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SwipeableListItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigation/StackNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/StackNavigator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/AddMealUSDA.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/AddMealUSDA.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,10 +39,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="153" y="92" width="1060" height="437" key="AVDManager" timestamp="1612723990656">
+    <state x="153" y="92" width="1060" height="437" key="AVDManager" timestamp="1612814356571">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="153" y="92" width="1060" height="437" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1612723990656" />
+    <state x="153" y="92" width="1060" height="437" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1612814356571" />
     <state x="180" y="0" key="SettingsEditor" timestamp="1612293912918">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

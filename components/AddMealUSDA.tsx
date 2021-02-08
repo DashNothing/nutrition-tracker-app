@@ -1,13 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { StyleSheet, FlatList, ListRenderItemInfo, Text } from "react-native";
-import {
-  Portal,
-  Dialog,
-  withTheme,
-  TextInput,
-  Button,
-  Searchbar,
-} from "react-native-paper";
+import { withTheme, Searchbar, Snackbar } from "react-native-paper";
 import ListItem from "../components/ListItem";
 
 import { useDispatch } from "react-redux";
@@ -32,6 +25,7 @@ const AddMealUSDA = ({ navigation, theme }: Props) => {
   const [chosenMeal, setChosenMeal] = useState<Meal | null>(null);
 
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const searchForFood = () => {
     if (searchQuery != "") {
@@ -91,7 +85,8 @@ const AddMealUSDA = ({ navigation, theme }: Props) => {
       meal.fiber = Math.round((meal.fiber * meal.amount) / 100);
 
       dispatch(addMeal(meal));
-      navigation.navigate("Dashboard");
+      setDialogVisible(false);
+      setSnackbarVisible(true);
     }
   };
 
@@ -125,6 +120,12 @@ const AddMealUSDA = ({ navigation, theme }: Props) => {
           handleDialogDismiss();
         }}
       />
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+      >
+        Meal added to today's nutritional stats.
+      </Snackbar>
     </Fragment>
   );
 };
